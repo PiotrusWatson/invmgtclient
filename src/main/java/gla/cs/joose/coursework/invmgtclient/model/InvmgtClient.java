@@ -2,6 +2,7 @@ package gla.cs.joose.coursework.invmgtclient.model;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Invocation.Builder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
@@ -39,8 +40,17 @@ public class InvmgtClient {
 	public Object updateRequest(long updateitemid,  long newBarcode, 
 							 String newItemName, String newItemType_s,
 							 int newQty, String newSupplier, String newDesc){
+		Item updated = new Item(newBarcode,newItemName,ItemType.getItemType(newItemType_s), newQty, newSupplier, newDesc);
+		
+		
+		Builder builder = itemsTarget.resolveTemplate("itemid", updateitemid).request();
+		Response putResponse = builder.put(Entity.json(updated));
+		if (putResponse.getStatus() != 200){
+			System.out.println("HTTP error code : " + putResponse.getStatus());
+			return putResponse.getStatus();
+		}
 		//Task 1
-		return null;	
+		return updated;
 	}
 	
 	/**
