@@ -2,6 +2,7 @@ package gla.cs.joose.coursework.invmgtclient.model;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Invocation.Builder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
@@ -40,6 +41,9 @@ public class InvmgtClient {
 							 String newItemName, String newItemType_s,
 							 int newQty, String newSupplier, String newDesc){
 		//Task 1
+		
+		
+		
 		return null;	
 	}
 	
@@ -100,6 +104,22 @@ public class InvmgtClient {
 				
 		//Task 4
 		
-		return -1;
+		Builder builder = itemsTarget.request();
+	
+		Item newItem = new Item(barcode, itemName, ItemType.getItemType( itemType_s ), qty, supplier, desc);
+		
+		Response getResponse = builder.post(Entity.json(newItem));
+		
+		// check response status code
+        if (getResponse.getStatus() != 201) {
+            throw new RuntimeException("HTTP error code : "+ getResponse.getStatus());
+        }
+        
+        // display addItem response
+        String feedback = getResponse.readEntity(String.class);
+        System.out.println("Server output... ");
+        System.out.println(feedback + "\n");
+		return getResponse.getStatus();
+	
 	}
 }
