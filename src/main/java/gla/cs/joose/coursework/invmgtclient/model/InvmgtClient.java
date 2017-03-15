@@ -91,7 +91,10 @@ public class InvmgtClient {
 	 * @return returns a list of items that matches the searchRequest parameters
 	 */
 	public Item[] searchRequest(String searchbydesc, String pattern, int limit){
-		Builder builder = itemsTarget.request(MediaType.APPLICATION_JSON);
+		Builder builder = itemsTarget.resolveTemplate("desc", searchbydesc)
+				.resolveTemplate("pattern", pattern)
+				.resolveTemplate("limit", limit)
+				.request(MediaType.APPLICATION_JSON);
 		Response getResponse = builder.get();
 		 
 		if (getResponse.getStatus() != 200)
