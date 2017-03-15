@@ -69,7 +69,7 @@ public class InvmgtClient {
 		
 		Response getResponse = builder.delete();
 		
-		// check response status code
+		/*// check response status code
         if (getResponse.getStatus() != 200) {
             throw new RuntimeException("HTTP error code : "+ getResponse.getStatus());
         }
@@ -77,7 +77,7 @@ public class InvmgtClient {
         // display deleteresponse
         String feedback = getResponse.readEntity(String.class);
         System.out.println("Server output... ");
-        System.out.println(feedback + "\n");
+        System.out.println(feedback + "\n");*/
 		return getResponse.getStatus();
 	}
 	
@@ -94,7 +94,8 @@ public class InvmgtClient {
 		Builder builder = itemsTarget.resolveTemplate("desc", searchbydesc)
 				.resolveTemplate("pattern", pattern)
 				.resolveTemplate("limit", limit)
-				.request(MediaType.APPLICATION_JSON);
+				.request();
+		
 		Response getResponse = builder.get();
 		 
 		if (getResponse.getStatus() != 200)
