@@ -105,12 +105,10 @@ public class InvmgtClient {
 		String feedback = getResponse.readEntity(String.class);
 		System.out.println("Server output... ");
 		System.out.println(feedback + "\n");
-		//Task 3
-		return getResponse.readEntity(Item[].class);
-
-
-
 		
+		return getResponse.readEntity(Item[].class);
+		//Task 3
+
 	}
 	
 	/**
