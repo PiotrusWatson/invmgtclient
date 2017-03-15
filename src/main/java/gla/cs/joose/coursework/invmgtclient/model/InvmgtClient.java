@@ -5,6 +5,7 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Invocation.Builder;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 public class InvmgtClient {
@@ -43,7 +44,7 @@ public class InvmgtClient {
 		Item updated = new Item(newBarcode,newItemName,ItemType.getItemType(newItemType_s), newQty, newSupplier, newDesc);
 		
 		
-		Builder builder = itemsTarget.resolveTemplate("itemid", updateitemid).request();
+		Builder builder = itemTarget.resolveTemplate("itemid", updateitemid).request();
 		Response putResponse = builder.put(Entity.json(updated));
 		if (putResponse.getStatus() != 200){
 			System.out.println("HTTP error code : " + putResponse.getStatus());
@@ -63,7 +64,7 @@ public class InvmgtClient {
 	 */
 	public int deleteRequest(long itemid){
 		//Task 2
-		Builder builder = itemsTarget.resolveTemplate("itemid", itemid)
+		Builder builder = itemTarget.resolveTemplate("itemid", itemid)
 									 .request();
 		
 		Response getResponse = builder.delete();
@@ -90,10 +91,14 @@ public class InvmgtClient {
 	 * @return returns a list of items that matches the searchRequest parameters
 	 */
 	public Item[] searchRequest(String searchbydesc, String pattern, int limit){
-		
+		Builder builder = itemsTarget.request(MediaType.APPLICATION_JSON);
+		Response getResponse = builder.get();
+		 
+		if (getResponse.getStatus() != 200)
+			throw new RuntimeException("HTTP error code : " + getResponse.getStatus() );
 		//Task 3
 		
-		return null;
+		return getResponse.readEntity(Item[].class);
 		
 	}
 	
@@ -112,7 +117,7 @@ public class InvmgtClient {
 				
 		//Task 4
 		
-		Builder builder = itemsTarget.request();
+		Builder builder = itemTarget.request();
 	
 		Item newItem = new Item(barcode, itemName, ItemType.getItemType( itemType_s ), qty, supplier, desc);
 		
