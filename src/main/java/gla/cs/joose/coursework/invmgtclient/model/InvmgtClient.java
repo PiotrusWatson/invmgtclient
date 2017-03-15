@@ -2,7 +2,9 @@ package gla.cs.joose.coursework.invmgtclient.model;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Invocation.Builder;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Response;
 
 public class InvmgtClient {
 	private static Client client;
@@ -38,7 +40,6 @@ public class InvmgtClient {
 							 String newItemName, String newItemType_s,
 							 int newQty, String newSupplier, String newDesc){
 		//Task 1
-		
 		return null;	
 	}
 	
@@ -50,8 +51,21 @@ public class InvmgtClient {
 	 */
 	public int deleteRequest(long itemid){
 		//Task 2
+		Builder builder = itemsTarget.resolveTemplate("itemid", itemid)
+									 .request();
 		
-		return -1;
+		Response getResponse = builder.delete();
+		
+		// check response status code
+        if (getResponse.getStatus() != 200) {
+            throw new RuntimeException("HTTP error code : "+ getResponse.getStatus());
+        }
+        
+        // display deleteresponse
+        String feedback = getResponse.readEntity(String.class);
+        System.out.println("Server output... ");
+        System.out.println(feedback + "\n");
+		return getResponse.getStatus();
 	}
 	
 	/**
