@@ -99,9 +99,16 @@ public class InvmgtClient {
 		 
 		if (getResponse.getStatus() != 200)
 			throw new RuntimeException("HTTP error code : " + getResponse.getStatus() );
-		//Task 3
 		
+		// display getresponse
+		String feedback = getResponse.readEntity(String.class);
+		System.out.println("Server output... ");
+		System.out.println(feedback + "\n");
+		//Task 3
 		return getResponse.readEntity(Item[].class);
+
+
+
 		
 	}
 	
