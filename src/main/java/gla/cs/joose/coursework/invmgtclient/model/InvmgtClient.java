@@ -126,7 +126,7 @@ public class InvmgtClient {
 				
 		//Task 4
 		
-		Builder builder = itemTarget.request();
+		Builder builder = itemsTarget.request();
 	
 		Item newItem = new Item(barcode, itemName, ItemType.getItemType( itemType_s ), qty, supplier, desc);
 		
